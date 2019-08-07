@@ -13,7 +13,9 @@ import retrofit2.converter.gson.GsonConverterFactory
 import javax.inject.Singleton
 
 @Module
-class ApplicationModule {
+class ApplicationModule(
+    private val application: ThisApplication
+) {
 
     @Provides
     @Singleton
@@ -35,7 +37,7 @@ class ApplicationModule {
     internal fun provideApiRetrofit(okHttpClient: OkHttpClient): Retrofit =
         Retrofit.Builder()
             .client(okHttpClient)
-            .baseUrl("")
+            .baseUrl(application.getString(R.string.instagram_base_url))
             .addConverterFactory(GsonConverterFactory.create())
             .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
             .build()

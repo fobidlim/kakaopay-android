@@ -1,13 +1,12 @@
 package com.fobidlim.kakaypay.libs
 
-import android.content.Context
 import android.content.Intent
-import android.os.Bundle
 import androidx.annotation.CallSuper
 import androidx.lifecycle.ViewModel
 import com.trello.rxlifecycle3.android.ActivityEvent
 import io.reactivex.ObservableTransformer
 import io.reactivex.subjects.PublishSubject
+import timber.log.Timber
 
 open class ActivityViewModel<ViewType : ActivityLifeCycleType> : ViewModel() {
 
@@ -18,22 +17,36 @@ open class ActivityViewModel<ViewType : ActivityLifeCycleType> : ViewModel() {
     fun intent(intent: Intent) = this.intent.onNext(intent)
 
     @CallSuper
-    fun onCreate(context: Context, savedInstanceState: Bundle?) {
+    fun onCreate() {
+        Timber.d("onCreate ${toString()}")
         dropView()
     }
 
     @CallSuper
+    fun onStart() {
+        Timber.d("onStart ${toString()}")
+    }
+
+    @CallSuper
     fun onResume(view: Any) {
+        Timber.d("onResume ${toString()}")
         onTakeView(view)
     }
 
     @CallSuper
     fun onPause() {
+        Timber.d("onPause ${toString()}")
         dropView()
     }
 
     @CallSuper
+    fun onStop() {
+        Timber.d("onStop ${toString()}")
+    }
+
+    @CallSuper
     fun onDestroy() {
+        Timber.d("onDestroy ${toString()}")
         viewChange.onComplete()
     }
 

@@ -1,9 +1,13 @@
 package com.fobidlim.kakaypay.viewmodels
 
 import com.fobidlim.kakaypay.libs.ActivityViewModel
+import com.fobidlim.kakaypay.libs.Environment
 import com.fobidlim.kakaypay.ui.activities.MainActivity
+import javax.inject.Inject
 
-class MainViewModel : ActivityViewModel<MainActivity>() {
+class MainViewModel @Inject constructor(
+    private val environment: Environment
+) : ActivityViewModel<MainActivity>() {
 
     init {
 

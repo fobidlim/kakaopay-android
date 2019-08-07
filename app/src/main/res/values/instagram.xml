@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="instagram_client_id">33470472cb1448298be8575efb37306c</string>
+    <string name="instagram_callback_url">https://instagram.com/</string>
+    <string name="instagram_base_url">https://api.instagram.com/</string>
+</resources>

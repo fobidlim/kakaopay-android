@@ -1,6 +1,7 @@
 package com.fobidlim.kakaypay
 
 import android.app.Application
+import timber.log.Timber
 
 class ThisApplication : Application() {
 
@@ -10,9 +11,12 @@ class ThisApplication : Application() {
         super.onCreate()
 
         component = DaggerApplicationComponent.builder()
+            .applicationModule(ApplicationModule(this))
             .build()
             .apply {
                 inject(this@ThisApplication)
             }
+
+        Timber.plant(Timber.DebugTree())
     }
 }
