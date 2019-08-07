@@ -7,7 +7,9 @@ import com.fobidlim.kakaypay.applicationComponent
 import com.fobidlim.kakaypay.databinding.ActivitySignInBinding
 import com.fobidlim.kakaypay.getViewModel
 import com.fobidlim.kakaypay.libs.BaseActivity
+import com.fobidlim.kakaypay.ui.dialogs.InstagramAuthDialog
 import com.fobidlim.kakaypay.viewmodels.SignInViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
 import javax.inject.Inject
 
 class SignInActivity : BaseActivity<SignInViewModel>() {
@@ -25,5 +27,11 @@ class SignInActivity : BaseActivity<SignInViewModel>() {
             .apply {
                 viewModel = this@SignInActivity.viewModel
             }
+
+        viewModel.showInstagramAuthDialog()
+            .compose(bindToLifecycle())
+            .observeOn(AndroidSchedulers.mainThread())
+            .map { InstagramAuthDialog(viewModel) }
+            .subscribe { it.show() }
     }
 }

@@ -1,5 +1,6 @@
 package com.fobidlim.kakaypay
 
+import com.fobidlim.kakaypay.libs.CurrentUser
 import com.fobidlim.kakaypay.libs.Environment
 import com.fobidlim.kakaypay.services.ApiClient
 import com.fobidlim.kakaypay.services.ApiClientType
@@ -19,13 +20,21 @@ class ApplicationModule(
 
     @Provides
     @Singleton
-    internal fun provideEnvironment(apiClient: ApiClientType): Environment =
-        Environment(apiClient)
+    internal fun provideCurrentUser(gson: Gson): CurrentUser = CurrentUser(gson)
 
     @Provides
     @Singleton
-    internal fun provideApiClientType(apiService: ApiService): ApiClientType =
-        ApiClient(apiService)
+    internal fun provideGson(): Gson = Gson()
+
+    @Provides
+    @Singleton
+    internal fun provideEnvironment(currentUser: CurrentUser, apiClient: ApiClientType): Environment =
+        Environment(currentUser, apiClient)
+
+    @Provides
+    @Singleton
+    internal fun provideApiClientType(gson: Gson, apiService: ApiService): ApiClientType =
+        ApiClient(gson, apiService)
 
     @Provides
     @Singleton
