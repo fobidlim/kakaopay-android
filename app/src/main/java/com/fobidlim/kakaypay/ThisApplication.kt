@@ -1,6 +1,18 @@
 package com.fobidlim.kakaypay
 
-class ThisApplication: Application() {
+import android.app.Application
 
+class ThisApplication : Application() {
 
+    lateinit var component: ApplicationComponent
+
+    override fun onCreate() {
+        super.onCreate()
+
+        component = DaggerApplicationComponent.builder()
+            .build()
+            .apply {
+                inject(this@ThisApplication)
+            }
+    }
 }

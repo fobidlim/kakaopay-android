@@ -1,6 +1,7 @@
 package com.fobidlim.kakaypay.ui.viewholders
 
 import androidx.recyclerview.widget.RecyclerView
+import com.fobidlim.kakaypay.databinding.ItemMediaBinding
 import com.fobidlim.kakaypay.models.Media
 
 class MediaViewHolder(
