@@ -13,6 +13,7 @@ import com.fobidlim.kakaypay.libs.qualifiers.UserPreference
 import com.fobidlim.kakaypay.services.ApiClient
 import com.fobidlim.kakaypay.services.ApiClientType
 import com.fobidlim.kakaypay.services.ApiService
+import com.fobidlim.kakaypay.services.interceptors.ApiRequestInterceptor
 import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
@@ -67,10 +68,19 @@ class ApplicationModule(
 
     @Provides
     @Singleton
-    internal fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
+    internal fun provideOkHttpClient(
+        apiRequestInterceptor: ApiRequestInterceptor,
+        httpLoggingInterceptor: HttpLoggingInterceptor
+    ): OkHttpClient =
         OkHttpClient.Builder()
+            .addInterceptor(apiRequestInterceptor)
             .addInterceptor(httpLoggingInterceptor)
             .build()
+
+    @Provides
+    @Singleton
+    internal fun provideApiRequestInterceptor(currentUser: CurrentUserType): ApiRequestInterceptor =
+        ApiRequestInterceptor(currentUser)
 
     @Provides
     @Singleton

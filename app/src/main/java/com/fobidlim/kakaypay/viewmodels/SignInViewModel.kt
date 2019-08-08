@@ -11,7 +11,6 @@ import com.fobidlim.kakaypay.ui.dialogs.InstagramAuthDialog
 import io.reactivex.Observable
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 import javax.inject.Inject
 
 @SuppressLint("CheckResult")
@@ -36,7 +35,6 @@ class SignInViewModel @Inject constructor(
                 user(accessToken)
                     .map { accessToken to it }
             }
-            .doOnError { Timber.w(it, "accessToken: ") }
             .doOnNext { environment.currentUser.login(it.second, it.first) }
             .compose(bindToLifecycle())
             .subscribe { showMainActivity.onComplete() }

@@ -15,10 +15,8 @@ abstract class CurrentUserType {
 
     abstract fun observable(): Observable<Optional<User>>
 
-    @Deprecated("")
     abstract fun getUser(): User?
 
-    @Deprecated("")
     fun exists(): Boolean = getUser() != null
 
     fun isLoggedIn(): Observable<Boolean> = observable().map { it.isNotEmpty }

@@ -10,6 +10,11 @@ class MainViewModel @Inject constructor(
 ) : ActivityViewModel<MainActivity>() {
 
     init {
-
+        environment.currentUser.loggedInUser()
+            .switchMap {}
+            .compose(bindToLifecycle())
+            .subscribe {}
     }
+
+    private fun recentMedia(accessToken: String) = environment.cli
 }

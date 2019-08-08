@@ -3,6 +3,7 @@ package com.fobidlim.kakaypay.services
 import com.fobidlim.kakaypay.libs.rx.operators.Operators
 import com.fobidlim.kakaypay.models.Envelope
 import com.fobidlim.kakaypay.models.User
+import com.fobidlim.kakaypay.services.apiresponses.RecentMediaEnvelope
 import com.fobidlim.kakaypay.services.apiresponses.UserEnvelope
 import com.google.gson.Gson
 import io.reactivex.Flowable
@@ -17,6 +18,13 @@ class ApiClient(
         apiService.user(accessToken)
             .toFlowable()
             .lift(apiErrorOperator<UserEnvelope>())
+            .subscribeOn(Schedulers.io())
+            .map { it.data }
+
+    override fun recentMedia(): Flowable<MutableList<Media>> =
+        apiService.recentMedia()
+            .toFlowable()
+            .lift(apiErrorOperator<RecentMediaEnvelope>())
             .subscribeOn(Schedulers.io())
             .map { it.data }
 
