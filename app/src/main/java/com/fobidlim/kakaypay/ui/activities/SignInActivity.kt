@@ -41,6 +41,13 @@ class SignInActivity : BaseActivity<SignInViewModel>() {
             viewModel.showMainActivity()
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe { showMainActivity() })
+
+        viewModel.showErrorToast()
+            .compose(bindToLifecycle())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe {
+                TODO("show toast")
+            }
     }
 
     private fun showMainActivity() =

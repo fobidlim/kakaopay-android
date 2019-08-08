@@ -5,6 +5,7 @@ import com.fobidlim.kakaypay.services.ApiException
 open class Envelope {
 
     var code: String = ""
+    var message: String = ""
 
     companion object {
 
