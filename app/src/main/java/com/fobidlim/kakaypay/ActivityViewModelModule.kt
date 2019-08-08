@@ -4,12 +4,18 @@ import androidx.lifecycle.ViewModel
 import com.fobidlim.kakaypay.viewmodels.MainViewModel
 import com.fobidlim.kakaypay.viewmodels.MediaDetailsViewModel
 import com.fobidlim.kakaypay.viewmodels.SignInViewModel
+import com.fobidlim.kakaypay.viewmodels.SplashViewModel
 import dagger.Binds
 import dagger.Module
 import dagger.multibindings.IntoMap
 
 @Module
 abstract class ActivityViewModelModule {
+
+    @Binds
+    @IntoMap
+    @ViewModelKey(SplashViewModel::class)
+    internal abstract fun splashViewModel(viewModel: SplashViewModel): ViewModel
 
     @Binds
     @IntoMap

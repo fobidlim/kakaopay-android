@@ -1,37 +1,48 @@
 package com.fobidlim.kakaypay.ui.activities
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.os.Handler
-import android.view.Menu
-import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import com.fobidlim.kakaypay.R
+import com.fobidlim.kakaypay.ViewModelFactory
+import com.fobidlim.kakaypay.applicationComponent
+import com.fobidlim.kakaypay.getViewModel
+import com.fobidlim.kakaypay.libs.BaseActivity
+import com.fobidlim.kakaypay.viewmodels.SplashViewModel
+import io.reactivex.android.schedulers.AndroidSchedulers
+import javax.inject.Inject
 
-class SplashActivity : AppCompatActivity() {
+class SplashActivity : BaseActivity<SplashViewModel>() {
 
+    @Inject
+    lateinit var viewModelFactory: ViewModelFactory
+
+    @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: Bundle?) {
+        applicationComponent.inject(this)
+        viewModel = getViewModel(viewModelFactory)
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
 
-        Handler().postDelayed({
-            startActivity(Intent(this, SignInActivity::class.java))
-        }, 150)
+        viewModel.showMainActivity()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { showMainActivity() }
+
+        viewModel.showSignInActivity()
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { showSignInActivity() }
     }
 
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
+    private fun showMainActivity() =
+        Intent(this, MainActivity::class.java).let {
+            startActivity(it)
+            finish()
         }
-    }
+
+    private fun showSignInActivity() =
+        Intent(this, SignInActivity::class.java).let {
+            startActivity(it)
+            finish()
+        }
 }

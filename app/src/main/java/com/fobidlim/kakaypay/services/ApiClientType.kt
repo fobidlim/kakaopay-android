@@ -1,6 +1,7 @@
 package com.fobidlim.kakaypay.services
 
 import com.fobidlim.kakaypay.models.User
+import io.reactivex.Flowable
 
 interface ApiClientType {
 

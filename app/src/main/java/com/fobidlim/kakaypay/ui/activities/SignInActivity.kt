@@ -1,5 +1,7 @@
 package com.fobidlim.kakaypay.ui.activities
 
+import android.annotation.SuppressLint
+import android.content.Intent
 import androidx.databinding.DataBindingUtil
 import com.fobidlim.kakaypay.R
 import com.fobidlim.kakaypay.ViewModelFactory
@@ -17,6 +19,7 @@ class SignInActivity : BaseActivity<SignInViewModel>() {
     @Inject
     lateinit var viewModelFactory: ViewModelFactory
 
+    @SuppressLint("CheckResult")
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
         applicationComponent.inject(this)
         viewModel = getViewModel(viewModelFactory)
@@ -31,7 +34,18 @@ class SignInActivity : BaseActivity<SignInViewModel>() {
         viewModel.showInstagramAuthDialog()
             .compose(bindToLifecycle())
             .observeOn(AndroidSchedulers.mainThread())
-            .map { InstagramAuthDialog(viewModel) }
+            .map { InstagramAuthDialog(this, viewModel) }
             .subscribe { it.show() }
+
+        addDisposable(
+            viewModel.showMainActivity()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { showMainActivity() })
     }
+
+    private fun showMainActivity() =
+        Intent(this, MainActivity::class.java).let {
+            startActivity(it)
+            finish()
+        }
 }

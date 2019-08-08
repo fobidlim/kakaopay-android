@@ -3,7 +3,12 @@ package com.fobidlim.kakaypay.libs.rx.operators
 import com.fobidlim.kakaypay.models.Envelope
 import com.fobidlim.kakaypay.services.ApiException
 import com.fobidlim.kakaypay.services.ResponseException
+import com.google.gson.Gson
+import io.reactivex.FlowableOperator
+import org.reactivestreams.Subscriber
+import org.reactivestreams.Subscription
 import retrofit2.Response
+import java.io.IOException
 
 class ApiErrorOperator<T : Envelope>(
     private val gson: Gson
@@ -30,6 +35,14 @@ class ApiErrorOperator<T : Envelope>(
                         }
                     }
                 }
+            }
+
+            override fun onError(t: Throwable?) {
+                observer.onError(t)
+            }
+
+            override fun onComplete() {
+                observer.onComplete()
             }
         }
 }

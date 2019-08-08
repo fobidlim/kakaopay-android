@@ -1,13 +1,23 @@
 package com.fobidlim.kakaypay
 
+import android.content.SharedPreferences
+import android.preference.PreferenceManager
 import com.fobidlim.kakaypay.libs.CurrentUser
+import com.fobidlim.kakaypay.libs.CurrentUserType
 import com.fobidlim.kakaypay.libs.Environment
+import com.fobidlim.kakaypay.libs.SharedPreferenceKey
+import com.fobidlim.kakaypay.libs.preferences.StringPreference
+import com.fobidlim.kakaypay.libs.preferences.StringPreferenceType
+import com.fobidlim.kakaypay.libs.qualifiers.AccessTokenPreference
+import com.fobidlim.kakaypay.libs.qualifiers.UserPreference
 import com.fobidlim.kakaypay.services.ApiClient
 import com.fobidlim.kakaypay.services.ApiClientType
 import com.fobidlim.kakaypay.services.ApiService
+import com.google.gson.Gson
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -20,7 +30,11 @@ class ApplicationModule(
 
     @Provides
     @Singleton
-    internal fun provideCurrentUser(gson: Gson): CurrentUser = CurrentUser(gson)
+    internal fun provideCurrentUser(
+        gson: Gson,
+        @AccessTokenPreference accessTokenPreference: StringPreferenceType,
+        @UserPreference userPreference: StringPreferenceType
+    ): CurrentUserType = CurrentUser(gson, accessTokenPreference, userPreference)
 
     @Provides
     @Singleton
@@ -28,7 +42,7 @@ class ApplicationModule(
 
     @Provides
     @Singleton
-    internal fun provideEnvironment(currentUser: CurrentUser, apiClient: ApiClientType): Environment =
+    internal fun provideEnvironment(currentUser: CurrentUserType, apiClient: ApiClientType): Environment =
         Environment(currentUser, apiClient)
 
     @Provides
@@ -53,7 +67,33 @@ class ApplicationModule(
 
     @Provides
     @Singleton
-    internal fun provideOkHttpClient(): OkHttpClient =
+    internal fun provideOkHttpClient(httpLoggingInterceptor: HttpLoggingInterceptor): OkHttpClient =
         OkHttpClient.Builder()
+            .addInterceptor(httpLoggingInterceptor)
             .build()
+
+    @Provides
+    @Singleton
+    internal fun provideHttpLoggingInterceptor(): HttpLoggingInterceptor =
+        HttpLoggingInterceptor()
+            .apply {
+                level = HttpLoggingInterceptor.Level.BODY
+            }
+
+    @Provides
+    @Singleton
+    @AccessTokenPreference
+    internal fun provideAccessTokenPreference(sharedPreferences: SharedPreferences): StringPreferenceType =
+        StringPreference(sharedPreferences, SharedPreferenceKey.ACCESS_TOKEN)
+
+    @Provides
+    @Singleton
+    @UserPreference
+    internal fun provideUserPreference(sharedPreferences: SharedPreferences): StringPreferenceType =
+        StringPreference(sharedPreferences, SharedPreferenceKey.USER)
+
+    @Provides
+    @Singleton
+    internal fun provideSharedPreferences(): SharedPreferences =
+        PreferenceManager.getDefaultSharedPreferences(application)
 }

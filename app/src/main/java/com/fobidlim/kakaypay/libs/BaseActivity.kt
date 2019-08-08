@@ -4,6 +4,8 @@ import android.content.Intent
 import android.view.MenuItem
 import androidx.annotation.CallSuper
 import com.trello.rxlifecycle3.components.support.RxAppCompatActivity
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 import timber.log.Timber
 
 open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActivity(), ActivityLifeCycleType {
@@ -13,6 +15,8 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
     }
 
     protected lateinit var viewModel: ViewModelType
+
+    private val disposables = CompositeDisposable()
 
     @CallSuper
     override fun onCreate(savedInstanceState: android.os.Bundle?) {
@@ -72,6 +76,9 @@ open class BaseActivity<ViewModelType : ActivityViewModel<*>> : RxAppCompatActiv
         super.onDestroy()
         Timber.d("onDestroy ${toString()}")
 
+        disposables.clear()
         viewModel.onDestroy()
     }
+
+    protected fun addDisposable(disposable: Disposable) = disposables.add(disposable)
 }

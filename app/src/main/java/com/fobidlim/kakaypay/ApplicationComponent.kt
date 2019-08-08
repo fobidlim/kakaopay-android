@@ -4,6 +4,7 @@ import com.fobidlim.kakaypay.libs.Environment
 import com.fobidlim.kakaypay.ui.activities.MainActivity
 import com.fobidlim.kakaypay.ui.activities.MediaDetailsActivity
 import com.fobidlim.kakaypay.ui.activities.SignInActivity
+import com.fobidlim.kakaypay.ui.activities.SplashActivity
 import dagger.Component
 import javax.inject.Singleton
 
@@ -20,6 +21,7 @@ interface ApplicationComponent {
 
     fun inject(application: ThisApplication)
 
+    fun inject(activity: SplashActivity)
     fun inject(activity: SignInActivity)
     fun inject(activity: MainActivity)
     fun inject(activity: MediaDetailsActivity)
