@@ -12,7 +12,6 @@ import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
-import timber.log.Timber
 import javax.inject.Inject
 
 @SuppressLint("CheckResult")
@@ -33,12 +32,8 @@ class SignInViewModel @Inject constructor(
         showInstagramAuthDialog = signInClick
 
         instagramAccessToken
-            .doOnNext { Timber.d("instagramAccessToken? $it") }
-            .doOnError { Timber.w(it, "ApiRequestInterceptor: token") }
             .switchMap { accessToken ->
-                Timber.d("accessToken? $accessToken")
                 user(accessToken)
-                    .doOnNext { Timber.d("user: doOnNext") }
                     .map { accessToken to it }
             }
             .doOnNext { environment.currentUser.login(it.second, it.first) }

@@ -5,6 +5,7 @@ import com.fobidlim.kakaypay.libs.ActivityViewModel
 import com.fobidlim.kakaypay.libs.Environment
 import com.fobidlim.kakaypay.ui.activities.SplashActivity
 import io.reactivex.subjects.CompletableSubject
+import java.util.concurrent.TimeUnit
 import javax.inject.Inject
 
 @SuppressLint("CheckResult")
@@ -17,6 +18,7 @@ class SplashViewModel @Inject constructor(
 
     init {
         environment.currentUser.isLoggedIn()
+            .debounce(1500, TimeUnit.MILLISECONDS)
             .compose(bindToLifecycle())
             .subscribe {
                 when (it) {
