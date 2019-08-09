@@ -1,9 +1,9 @@
 package com.fobidlim.kakaypay.services
 
-import com.fobidlim.kakaypay.models.Envelope
+import com.fobidlim.kakaypay.services.apiresponses.ErrorEnvelope
 import retrofit2.Response
 
 class ApiException(
-    val errorEnvelope: Envelope,
+    val errorEnvelope: ErrorEnvelope,
     response: Response<*>
 ) : ResponseException(response)

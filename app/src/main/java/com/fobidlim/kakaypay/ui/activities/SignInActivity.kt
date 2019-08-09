@@ -28,7 +28,7 @@ class SignInActivity : BaseActivity<SignInViewModel>() {
 
         DataBindingUtil.setContentView<ActivitySignInBinding>(this, R.layout.activity_sign_in)
             .apply {
-                viewModel = this@SignInActivity.viewModel
+                vm = viewModel
             }
 
         viewModel.showInstagramAuthDialog()

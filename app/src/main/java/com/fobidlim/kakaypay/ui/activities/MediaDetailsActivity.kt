@@ -28,6 +28,9 @@ class MediaDetailsActivity : BaseActivity<MediaDetailsViewModel>() {
 
         val binding =
             DataBindingUtil.setContentView<ActivityMediaDetailsBinding>(this, R.layout.activity_media_details)
+                .apply {
+                    vm = viewModel
+                }
 
         setSupportActionBar(toolbar)
             .apply {
@@ -39,5 +42,10 @@ class MediaDetailsActivity : BaseActivity<MediaDetailsViewModel>() {
             .observeOn(AndroidSchedulers.mainThread())
             .doOnNext { Timber.d("setMedia? $it") }
             .subscribe { binding.media = it }
+
+        viewModel.setCaptionVisibility()
+            .compose(bindToLifecycle())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { binding.captionVisibility = it }
     }
 }

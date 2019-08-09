@@ -1,8 +1,8 @@
 package com.fobidlim.kakaypay.libs.rx.operators
 
-import com.fobidlim.kakaypay.models.Envelope
 import com.fobidlim.kakaypay.services.ApiException
 import com.fobidlim.kakaypay.services.ResponseException
+import com.fobidlim.kakaypay.services.apiresponses.ErrorEnvelope
 import com.google.gson.Gson
 import io.reactivex.FlowableOperator
 import org.reactivestreams.Subscriber
@@ -10,7 +10,7 @@ import org.reactivestreams.Subscription
 import retrofit2.Response
 import java.io.IOException
 
-class ApiErrorOperator<T : Envelope>(
+class ApiErrorOperator<T>(
     private val gson: Gson
 ) : FlowableOperator<T, Response<T>> {
 
@@ -27,7 +27,7 @@ class ApiErrorOperator<T : Envelope>(
                     true -> observer.onNext(tResponse.body())
                     else -> {
                         try {
-                            gson.fromJson(tResponse.errorBody()!!.string(), Envelope::class.java).let {
+                            gson.fromJson(tResponse.errorBody()!!.string(), ErrorEnvelope::class.java).let {
                                 observer.onError(ApiException(it, tResponse))
                             }
                         } catch (e: IOException) {

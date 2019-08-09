@@ -1,7 +1,6 @@
 package com.fobidlim.kakaypay.services
 
 import com.fobidlim.kakaypay.libs.rx.operators.Operators
-import com.fobidlim.kakaypay.models.Envelope
 import com.fobidlim.kakaypay.models.Media
 import com.fobidlim.kakaypay.models.User
 import com.fobidlim.kakaypay.services.apiresponses.RecentMediaEnvelope
@@ -29,5 +28,5 @@ class ApiClient(
             .subscribeOn(Schedulers.io())
             .map { it.data }
 
-    private fun <T : Envelope> apiErrorOperator() = Operators.apiError<T>(gson)
+    private fun <T> apiErrorOperator() = Operators.apiError<T>(gson)
 }

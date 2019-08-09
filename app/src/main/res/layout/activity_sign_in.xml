@@ -4,7 +4,7 @@
         xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
-        <variable name="viewModel" type="com.fobidlim.kakaypay.viewmodels.SignInViewModel"/>
+        <variable name="vm" type="com.fobidlim.kakaypay.viewmodels.SignInViewModel"/>
 
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -17,7 +17,7 @@
                 android:text="@string/sign_in"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:onClick="@{() -> viewModel.signInClick()}"
+                android:onClick="@{() -> vm.signInClick()}"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"

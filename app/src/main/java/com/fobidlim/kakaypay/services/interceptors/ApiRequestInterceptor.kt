@@ -1,5 +1,6 @@
 package com.fobidlim.kakaypay.services.interceptors
 
+import com.fobidlim.kakaypay.BuildConfig
 import com.fobidlim.kakaypay.libs.CurrentUserType
 import okhttp3.HttpUrl
 import okhttp3.Interceptor
@@ -21,10 +22,11 @@ class ApiRequestInterceptor(
             .url(url(initialRequest.url()))
             .build()
 
-    private fun url(initialHttpUrl: HttpUrl) =
+    private fun url(initialHttpUrl: HttpUrl): HttpUrl =
         initialHttpUrl.newBuilder()
+            .setQueryParameter("version", BuildConfig.VERSION_NAME)
             .apply {
-                if (currentUser.exists()) {
+                if (currentUser.getAccessToken().isNotEmpty()) {
                     setQueryParameter("access_token", currentUser.getAccessToken())
                 }
             }

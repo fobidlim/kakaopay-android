@@ -4,12 +4,16 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <variable name="vm" type="com.fobidlim.kakaypay.viewmodels.MediaDetailsViewModel"/>
         <variable name="media" type="com.fobidlim.kakaypay.models.Media"/>
+        <variable name="captionVisibility" type="Integer"/>
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:animateLayoutChanges="true"
+            android:onClick="@{() -> vm.rootClick()}"
             tools:context=".ui.activities.MediaDetailsActivity">
 
         <androidx.appcompat.widget.Toolbar
@@ -29,6 +33,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{media.caption.text}"
                 android:textColor="@android:color/white"
+                android:visibility="@{captionVisibility}"
                 app:layout_constraintBottom_toBottomOf="parent"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

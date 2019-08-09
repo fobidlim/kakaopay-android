@@ -3,6 +3,7 @@ package com.fobidlim.kakaypay.ui.activities
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.fobidlim.kakaypay.R
 import com.fobidlim.kakaypay.ViewModelFactory
@@ -44,6 +45,11 @@ class MainActivity : BaseActivity<MainViewModel>() {
             .compose(bindToLifecycle())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { adapter.updateData(it) }
+
+        viewModel.showErrorToast()
+            .compose(bindToLifecycle())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { Toast.makeText(this, it, Toast.LENGTH_SHORT).show() }
 
         viewModel.showMediaDetails()
             .compose(bindToLifecycle())
