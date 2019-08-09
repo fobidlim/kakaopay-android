@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable name="comment" type="com.fobidlim.kakaypay.models.Comment"/>
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_bottom_sheet_dialog"
+            android:paddingStart="16dp"
+            android:paddingTop="8dp"
+            android:paddingEnd="16dp"
+            android:paddingBottom="8dp">
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@id/username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{comment.from.username}"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{comment.text}"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                app:layout_constraintTop_toTopOf="@id/username"
+                app:layout_constraintStart_toEndOf="@id/username"/>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

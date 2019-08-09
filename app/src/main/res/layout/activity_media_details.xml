@@ -85,6 +85,7 @@
                 android:drawablePadding="8dp"
                 android:gravity="center_vertical"
                 android:visibility="@{captionVisibility}"
+                android:onClick="@{() -> vm.commentsClick(media.id)}"
                 app:layout_constraintTop_toTopOf="@+id/likes"
                 app:layout_constraintStart_toEndOf="@+id/likes"
                 tools:text="999"/>

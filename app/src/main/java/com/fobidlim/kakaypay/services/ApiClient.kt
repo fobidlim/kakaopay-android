@@ -1,6 +1,7 @@
 package com.fobidlim.kakaypay.services
 
 import com.fobidlim.kakaypay.libs.rx.operators.Operators
+import com.fobidlim.kakaypay.models.Comment
 import com.fobidlim.kakaypay.models.Media
 import com.fobidlim.kakaypay.models.User
 import com.fobidlim.kakaypay.services.apiresponses.RecentMediaEnvelope
@@ -25,6 +26,13 @@ class ApiClient(
         apiService.recentMedia()
             .toFlowable()
             .lift(apiErrorOperator<RecentMediaEnvelope>())
+            .subscribeOn(Schedulers.io())
+            .map { it.data }
+
+    override fun comments(mediaId: String): Flowable<MutableList<Comment>> =
+        apiService.comments(mediaId)
+            .toFlowable()
+            .lift(apiErrorOperator())
             .subscribeOn(Schedulers.io())
             .map { it.data }
 

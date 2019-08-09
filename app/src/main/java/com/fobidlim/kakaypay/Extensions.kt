@@ -1,6 +1,7 @@
 package com.fobidlim.kakaypay
 
 import android.app.Activity
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -11,6 +12,9 @@ val Activity.app: ThisApplication
 
 val FragmentActivity.applicationComponent: ApplicationComponent
     get() = app.component
+
+val Fragment.applicationComponent: ApplicationComponent
+    get() = activity!!.applicationComponent
 
 inline fun <reified T : ViewModel> FragmentActivity.getViewModel(viewModelFactory: ViewModelProvider.Factory): T =
     ViewModelProviders.of(this, viewModelFactory)[T::class.java]

@@ -12,6 +12,7 @@ import com.fobidlim.kakaypay.databinding.ActivityMediaDetailsBinding
 import com.fobidlim.kakaypay.getViewModel
 import com.fobidlim.kakaypay.libs.BaseActivity
 import com.fobidlim.kakaypay.models.Location
+import com.fobidlim.kakaypay.ui.fragments.CommentsBottomSheetDialog
 import com.fobidlim.kakaypay.viewmodels.MediaDetailsViewModel
 import com.fobidlim.kakaypay.viewmodels.MediaDetailsViewModel.Companion.GOOGLE_MAPS_PACKAGE_NAME
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -46,15 +47,20 @@ class MediaDetailsActivity : BaseActivity<MediaDetailsViewModel>() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { binding.media = it }
 
+        viewModel.setCaptionVisibility()
+            .compose(bindToLifecycle())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { binding.captionVisibility = it }
+
         viewModel.openGoogleMaps()
             .compose(bindToLifecycle())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(::openGoogleMaps)
 
-        viewModel.setCaptionVisibility()
+        viewModel.showCommentsDetails()
             .compose(bindToLifecycle())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { binding.captionVisibility = it }
+            .subscribe(::showCommentsDetails)
     }
 
     private fun openGoogleMaps(location: Location) =
@@ -80,4 +86,8 @@ class MediaDetailsActivity : BaseActivity<MediaDetailsViewModel>() {
                     }
                 }
             }
+
+    private fun showCommentsDetails(mediaId: String) =
+        CommentsBottomSheetDialog.newInstance(mediaId)
+            .show(supportFragmentManager, mediaId)
 }

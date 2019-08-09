@@ -20,13 +20,16 @@ class MediaDetailsViewModel @Inject constructor(
 
     private val rootClick = PublishSubject.create<Int>()
     private val locationClick = PublishSubject.create<Location>()
+    private val commentsClick = PublishSubject.create<String>()
 
     private val setMedia = BehaviorSubject.create<Media>()
-    private val openGoogleMaps: Observable<Location>
     private val setCaptionVisibility = BehaviorSubject.create<Int>()
+    private val openGoogleMaps: Observable<Location>
+    private val showCommentsDetails: Observable<String>
 
     init {
         openGoogleMaps = locationClick
+        showCommentsDetails = commentsClick
 
         intent()
             .map { it.getParcelableExtra<Media>(IntentKey.MEDIA) }
@@ -46,10 +49,12 @@ class MediaDetailsViewModel @Inject constructor(
 
     fun rootClick(visibility: Int) = rootClick.onNext(visibility)
     fun locationClick(location: Location) = locationClick.onNext(location)
+    fun commentsClick(mediaId: String) = commentsClick.onNext(mediaId)
 
     fun setMedia() = setMedia
-    fun openGoogleMaps() = openGoogleMaps
     fun setCaptionVisibility() = setCaptionVisibility
+    fun openGoogleMaps() = openGoogleMaps
+    fun showCommentsDetails() = showCommentsDetails
 
     companion object {
         const val GOOGLE_MAPS_PACKAGE_NAME = "com.google.android.apps.maps"
