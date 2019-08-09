@@ -12,6 +12,7 @@ import com.fobidlim.kakaypay.ui.adapters.MediaAdapter
 import com.fobidlim.kakaypay.ui.viewholders.MediaViewHolder
 import io.reactivex.Observable
 import io.reactivex.subjects.BehaviorSubject
+import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
@@ -29,7 +30,7 @@ class MainViewModel @Inject constructor(
     private val updateData = BehaviorSubject.create<MutableList<Media>>()
     private val showErrorToast = BehaviorSubject.create<String>()
     private val showMediaDetails: Observable<Media>
-    private val showSignIn = BehaviorSubject.create<Any>()
+    private val showSignIn = CompletableSubject.create()
 
     init {
         showMediaDetails = mediaItemClick.doOnNext { Timber.d("mediaItemClick? $it") }
@@ -37,7 +38,7 @@ class MainViewModel @Inject constructor(
         signOutClick
             .doOnNext { environment.currentUser.logout() }
             .compose(bindToLifecycle())
-            .subscribe { showSignIn.onNext(0) }
+            .subscribe { showSignIn.onComplete() }
 
         recentMedia()
             .compose(bindToLifecycle())

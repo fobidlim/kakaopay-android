@@ -59,10 +59,10 @@ class MainActivity : BaseActivity<MainViewModel>() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(::showMediaDetailsActivity)
 
-        viewModel.showSignIn()
-            .compose(bindToLifecycle())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe { showSignInActivity() }
+        addDisposable(
+            viewModel.showSignIn()
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe { showSignInActivity() })
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
