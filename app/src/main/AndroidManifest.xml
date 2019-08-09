@@ -30,7 +30,8 @@
         <activity android:name=".ui.activities.MainActivity"
                   android:launchMode="singleInstance"/>
 
-        <activity android:name=".ui.activities.MediaDetailsActivity"/>
+        <activity android:name=".ui.activities.MediaDetailsActivity"
+                  android:label=""/>
 
     </application>
 

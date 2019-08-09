@@ -18,5 +18,5 @@ data class Media(
     val tags: MutableList<String>,
     val location: Location,
     @SerializedName("created_time") val createdTime: String,
-    val videos: MediaResolutions
+    val videos: MediaResolutions? = null
 ) : Parcelable

@@ -10,8 +10,8 @@ data class User(
     val username: String,
     @SerializedName("full_name") val fullName: String,
     @SerializedName("profile_picture") val profilePicture: String,
-    val bio: String,
-    val website: String,
+    val bio: String? = "",
+    val website: String? = "",
     @SerializedName("is_business") val isBusiness: Boolean,
-    val counts: UserCount
+    val counts: UserCount? = null
 ) : Parcelable

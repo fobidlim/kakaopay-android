@@ -1,6 +1,7 @@
 package com.fobidlim.kakaypay.ui.activities
 
 import android.annotation.SuppressLint
+import android.content.Intent
 import android.os.Bundle
 import androidx.recyclerview.widget.GridLayoutManager
 import com.fobidlim.kakaypay.R
@@ -8,6 +9,8 @@ import com.fobidlim.kakaypay.ViewModelFactory
 import com.fobidlim.kakaypay.applicationComponent
 import com.fobidlim.kakaypay.getViewModel
 import com.fobidlim.kakaypay.libs.BaseActivity
+import com.fobidlim.kakaypay.libs.IntentKey
+import com.fobidlim.kakaypay.models.Media
 import com.fobidlim.kakaypay.ui.adapters.MediaAdapter
 import com.fobidlim.kakaypay.viewmodels.MainViewModel
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -20,7 +23,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
     lateinit var viewModelFactory: ViewModelFactory
 
     private val adapter: MediaAdapter by lazy {
-        MediaAdapter()
+        MediaAdapter(viewModel)
     }
 
     @SuppressLint("CheckResult")
@@ -41,5 +44,16 @@ class MainActivity : BaseActivity<MainViewModel>() {
             .compose(bindToLifecycle())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { adapter.updateData(it) }
+
+        viewModel.showMediaDetails()
+            .compose(bindToLifecycle())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(::showMediaDetailsActivity)
     }
+
+    private fun showMediaDetailsActivity(media: Media) =
+        Intent(this, MediaDetailsActivity::class.java).let {
+            it.putExtra(IntentKey.MEDIA, media)
+            startActivity(it)
+        }
 }
