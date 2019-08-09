@@ -8,11 +8,13 @@ import android.net.Uri
 import android.os.Build
 import android.os.Bundle
 import android.webkit.WebResourceRequest
+import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
 import com.fobidlim.kakaypay.R
 import kotlinx.android.synthetic.main.dialog_instagram_auth.*
 import timber.log.Timber
+
 
 class InstagramAuthDialog(
     context: Context,
@@ -36,7 +38,12 @@ class InstagramAuthDialog(
         setContentView(R.layout.dialog_instagram_auth)
 
         web_view.apply {
-            settings.javaScriptEnabled = true
+            settings.apply {
+                javaScriptEnabled = true
+                cacheMode = WebSettings.LOAD_NO_CACHE
+                setAppCacheEnabled(false)
+            }
+
             loadUrl(requestUrl)
             webViewClient = object : WebViewClient() {
 

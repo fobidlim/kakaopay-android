@@ -3,6 +3,8 @@ package com.fobidlim.kakaypay.ui.activities
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.recyclerview.widget.GridLayoutManager
 import com.fobidlim.kakaypay.R
@@ -35,6 +37,7 @@ class MainActivity : BaseActivity<MainViewModel>() {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
+        setSupportActionBar(toolbar)
 
         recycler_view.apply {
             layoutManager = GridLayoutManager(this@MainActivity, 3)
@@ -55,11 +58,38 @@ class MainActivity : BaseActivity<MainViewModel>() {
             .compose(bindToLifecycle())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(::showMediaDetailsActivity)
+
+        viewModel.showSignIn()
+            .compose(bindToLifecycle())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe { showSignInActivity() }
     }
 
-    private fun showMediaDetailsActivity(media: Media) =
-        Intent(this, MediaDetailsActivity::class.java).let {
-            it.putExtra(IntentKey.MEDIA, media)
-            startActivity(it)
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.menu_main, menu)
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean =
+        when (item?.itemId) {
+            R.id.sign_out -> {
+                viewModel.signOutClick()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
         }
+
+    private fun showMediaDetailsActivity(media: Media) =
+        Intent(this, MediaDetailsActivity::class.java)
+            .let {
+                it.putExtra(IntentKey.MEDIA, media)
+                startActivity(it)
+            }
+
+    private fun showSignInActivity() =
+        Intent(this, SignInActivity::class.java)
+            .let {
+                startActivity(it)
+                finish()
+            }
 }

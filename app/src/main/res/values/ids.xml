@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="toolbar" type="id"/>
+    <item name="sign_out" type="id"/>
     <item name="username" type="id"/>
 </resources>

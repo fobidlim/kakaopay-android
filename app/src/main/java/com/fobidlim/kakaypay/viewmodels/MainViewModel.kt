@@ -1,5 +1,6 @@
 package com.fobidlim.kakaypay.viewmodels
 
+import android.annotation.SuppressLint
 import com.fobidlim.kakaypay.libs.ActivityViewModel
 import com.fobidlim.kakaypay.libs.Environment
 import com.fobidlim.kakaypay.libs.rx.transformers.Transformers.pipeApiErrorsTo
@@ -15,6 +16,7 @@ import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
 import javax.inject.Inject
 
+@SuppressLint("CheckResult")
 class MainViewModel @Inject constructor(
     private val environment: Environment
 ) : ActivityViewModel<MainActivity>(), MediaAdapter.Delegate {
@@ -22,13 +24,20 @@ class MainViewModel @Inject constructor(
     private val apiError = PublishSubject.create<ErrorEnvelope>()
     private val networkError = PublishSubject.create<Throwable>()
     private val mediaItemClick = PublishSubject.create<Media>()
+    private val signOutClick = PublishSubject.create<Any>()
 
     private val updateData = BehaviorSubject.create<MutableList<Media>>()
     private val showErrorToast = BehaviorSubject.create<String>()
     private val showMediaDetails: Observable<Media>
+    private val showSignIn = BehaviorSubject.create<Any>()
 
     init {
         showMediaDetails = mediaItemClick.doOnNext { Timber.d("mediaItemClick? $it") }
+
+        signOutClick
+            .doOnNext { environment.currentUser.logout() }
+            .compose(bindToLifecycle())
+            .subscribe { showSignIn.onNext(0) }
 
         recentMedia()
             .compose(bindToLifecycle())
@@ -50,9 +59,12 @@ class MainViewModel @Inject constructor(
             .compose(pipeErrorsTo(networkError))
             .toObservable()
 
+    fun signOutClick() = signOutClick.onNext(0)
+
     override fun mediaViewHolderItemClick(holder: MediaViewHolder, media: Media) = mediaItemClick.onNext(media)
 
     fun updateData() = updateData
     fun showErrorToast() = showErrorToast
     fun showMediaDetails() = showMediaDetails
+    fun showSignIn() = showSignIn
 }

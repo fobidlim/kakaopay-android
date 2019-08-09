@@ -1,5 +1,6 @@
 package com.fobidlim.kakaypay
 
+import android.content.Context
 import android.content.SharedPreferences
 import android.preference.PreferenceManager
 import com.fobidlim.kakaypay.libs.CurrentUser
@@ -9,6 +10,7 @@ import com.fobidlim.kakaypay.libs.SharedPreferenceKey
 import com.fobidlim.kakaypay.libs.preferences.StringPreference
 import com.fobidlim.kakaypay.libs.preferences.StringPreferenceType
 import com.fobidlim.kakaypay.libs.qualifiers.AccessTokenPreference
+import com.fobidlim.kakaypay.libs.qualifiers.ApplicationContext
 import com.fobidlim.kakaypay.libs.qualifiers.UserPreference
 import com.fobidlim.kakaypay.services.ApiClient
 import com.fobidlim.kakaypay.services.ApiClientType
@@ -31,11 +33,17 @@ class ApplicationModule(
 
     @Provides
     @Singleton
+    @ApplicationContext
+    internal fun provideApplicationContext(): Context = application
+
+    @Provides
+    @Singleton
     internal fun provideCurrentUser(
+        @ApplicationContext context: Context,
         gson: Gson,
         @AccessTokenPreference accessTokenPreference: StringPreferenceType,
         @UserPreference userPreference: StringPreferenceType
-    ): CurrentUserType = CurrentUser(gson, accessTokenPreference, userPreference)
+    ): CurrentUserType = CurrentUser(context, gson, accessTokenPreference, userPreference)
 
     @Provides
     @Singleton
