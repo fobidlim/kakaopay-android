@@ -4,6 +4,8 @@
         xmlns:tools="http://schemas.android.com/tools">
 
     <data>
+        <import type="android.view.View"/>
+
         <variable name="vm" type="com.fobidlim.kakaypay.viewmodels.MediaDetailsViewModel"/>
         <variable name="media" type="com.fobidlim.kakaypay.models.Media"/>
         <variable name="captionVisibility" type="Integer"/>
@@ -13,7 +15,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:animateLayoutChanges="true"
-            android:onClick="@{() -> vm.rootClick()}"
+            android:onClick="@{() -> vm.rootClick(caption.getVisibility())}"
             tools:context=".ui.activities.MediaDetailsActivity">
 
         <androidx.appcompat.widget.Toolbar
@@ -22,18 +24,83 @@
                 android:layout_height="?actionBarSize"
                 app:layout_constraintTop_toTopOf="parent"/>
 
+        <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{media.location.name}"
+                android:textColor="@android:color/white"
+                android:visibility="@{media.location != null &amp;&amp; captionVisibility == View.VISIBLE ? View.VISIBLE : View.GONE}"
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:drawableStart="@drawable/ic_location_on_white_24dp"
+                android:drawableLeft="@drawable/ic_location_on_white_24dp"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"
+                tools:text="location"/>
+
         <androidx.appcompat.widget.AppCompatImageView
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 app:loadThumbnail="@{media.images.thumbnail}"
                 app:loadImage="@{media.images.standardResolution}"/>
 
-        <androidx.appcompat.widget.AppCompatTextView
-                android:layout_width="match_parent"
+        <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                app:layout_constraintGuide_percent="0.8"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/likes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:text="@{media.likes.count + ``}"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:drawableStart="@drawable/ic_favorite_white_24dp"
+                android:drawableLeft="@drawable/ic_favorite_white_24dp"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:visibility="@{captionVisibility}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/guideline"
+                tools:text="999"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/comments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/white"
+                android:text="@{media.comments.count + ``}"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp"
+                android:drawableStart="@drawable/ic_comment_white_24dp"
+                android:drawableLeft="@drawable/ic_comment_white_24dp"
+                android:drawablePadding="8dp"
+                android:gravity="center_vertical"
+                android:visibility="@{captionVisibility}"
+                app:layout_constraintTop_toTopOf="@+id/likes"
+                app:layout_constraintStart_toEndOf="@+id/likes"
+                tools:text="999"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/caption"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
                 android:text="@{media.caption.text}"
                 android:textColor="@android:color/white"
                 android:visibility="@{captionVisibility}"
-                app:layout_constraintBottom_toBottomOf="parent"/>
+                android:paddingStart="16dp"
+                android:paddingTop="8dp"
+                android:paddingEnd="16dp"
+                android:paddingBottom="16dp"
+                app:layout_constraintTop_toBottomOf="@+id/likes"
+                app:layout_constraintBottom_toBottomOf="parent"
+                tools:text="caption"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

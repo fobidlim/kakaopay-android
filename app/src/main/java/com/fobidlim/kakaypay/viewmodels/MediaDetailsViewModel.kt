@@ -16,7 +16,7 @@ class MediaDetailsViewModel @Inject constructor(
     private val environment: Environment
 ) : ActivityViewModel<MediaDetailsActivity>() {
 
-    private val rootClick = PublishSubject.create<Any>()
+    private val rootClick = PublishSubject.create<Int>()
 
     private val setMedia = BehaviorSubject.create<Media>()
     private val setCaptionVisibility = BehaviorSubject.create<Int>()
@@ -28,12 +28,17 @@ class MediaDetailsViewModel @Inject constructor(
             .subscribe(setMedia)
 
         rootClick
-            .map { View.GONE }
+            .map {
+                when (it) {
+                    View.VISIBLE -> View.GONE
+                    else -> View.VISIBLE
+                }
+            }
             .compose(bindToLifecycle())
             .subscribe(setCaptionVisibility)
     }
 
-    fun rootClick() = rootClick.onNext(0)
+    fun rootClick(visibility: Int) = rootClick.onNext(visibility)
 
     fun setMedia() = setMedia
     fun setCaptionVisibility() = setCaptionVisibility
