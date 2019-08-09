@@ -1,6 +1,6 @@
 # kakaopay-android
 
-#### Instagram API Endpoints
+### Instagram API Endpoints
 
 - [Users](https://www.instagram.com/developer/endpoints/users/)
 
