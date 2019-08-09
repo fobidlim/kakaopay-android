@@ -7,16 +7,16 @@ import kotlinx.android.parcel.Parcelize
 @Parcelize
 data class Media(
     val id: String,
-    val comments: Comments,
-    val caption: Caption,
-    val likes: Likes,
-    val link: String,
+    val comments: Comments? = null,
+    val caption: Caption? = null,
+    val likes: Likes? = null,
+    val link: String = "",
     val user: User,
-    val images: MediaResolutions,
+    val images: MediaResolutions? = null,
     val type: String,
     val filter: String,
     val tags: MutableList<String>,
-    val location: Location,
+    val location: Location? = null,
     @SerializedName("created_time") val createdTime: String,
     val videos: MediaResolutions? = null
 ) : Parcelable
