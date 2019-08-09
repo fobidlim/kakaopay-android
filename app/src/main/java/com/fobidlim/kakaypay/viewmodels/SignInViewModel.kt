@@ -9,6 +9,7 @@ import com.fobidlim.kakaypay.models.Envelope
 import com.fobidlim.kakaypay.ui.activities.SignInActivity
 import com.fobidlim.kakaypay.ui.dialogs.InstagramAuthDialog
 import io.reactivex.Observable
+import io.reactivex.subjects.BehaviorSubject
 import io.reactivex.subjects.CompletableSubject
 import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
@@ -21,7 +22,7 @@ class SignInViewModel @Inject constructor(
     private val signInClick = PublishSubject.create<Any>()
     private val instagramAccessToken = PublishSubject.create<String>()
     private val apiError = PublishSubject.create<Envelope>()
-    private val networkError = PublisuSubject.create<Throable>()
+    private val networkError = PublishSubject.create<Throwable>()
 
     private val showInstagramAuthDialog: Observable<Any>
     private val showMainActivity = CompletableSubject.create()
@@ -41,7 +42,8 @@ class SignInViewModel @Inject constructor(
 
         Observable.merge(
             apiError.map { it.message },
-            networkError.map { })
+            networkError.map { it.localizedMessage }
+        )
             .compose(bindToLifecycle())
             .subscribe(showErrorToast)
     }
